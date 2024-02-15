@@ -1,0 +1,103 @@
+#include <iostream>
+using namespace std;
+
+struct Box {
+    int length;
+    int width;
+    int height;
+    double weight;
+    int value;
+
+    Box(int l, int w, int h, double wt, int v) : length(l), width(w), height(h), weight(wt), value(v) {}
+};
+
+int sumValue(Box boxes[], int size) {
+    int total = 0;
+    for (int i = 0; i < size; i++) {
+        total += boxes[i].value;
+    }
+    return total;
+}
+
+bool lvhSum(Box boxes[], int size, int maxSum) {
+    int sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += (boxes[i].length + boxes[i].width + boxes[i].height);
+    }
+    if (sum <= maxSum) {
+        return true;
+    }
+    else return false;
+}
+
+double maxWeight(Box boxes[], int size, int maxV) {
+    double maxWeight = 0.0;
+    for (int i = 0; i < size; ++i) {
+        if (boxes[i].length * boxes[i].width * boxes[i].height <= maxV) {
+            maxWeight = max(maxWeight, boxes[i].weight);
+        }
+    }
+    return maxWeight;
+}
+
+bool boxInBox(Box boxes[], int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            if (boxes[i].length < boxes[j].length && boxes[i].width < boxes[j].width && boxes[i].height < boxes[j].height) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool boxEqual(Box box1, Box box2) {
+    if (box1.length == box2.length &&
+        box1.width == box2.width &&
+        box1.height == box2.height &&
+        box1.weight == box2.weight &&
+        box1.value == box2.value) {
+        return true;
+    }
+    else return false;
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    //1
+    Box box1(10, 5, 3, 2.5, 150);
+    Box box2(8, 4, 2, 1.8, 120);
+    Box box3(10, 5, 3, 2.5, 150);
+    Box boxes[] = { box1, box2, box3 };
+    //2
+    int size = 2;
+    int total = sumValue(boxes, size);
+    cout << "Стоимость всех коробок: " << total << " коп." << endl;
+    //3
+    int maxSum = 5;
+    if(lvhSum(boxes, size, maxSum)) {
+        cout << "Сумма длины, ширины и высоты всех коробок не превосходит заданное значение: " << maxSum << endl;
+    }
+    else {
+        cout << "Сумма длины, ширины и высоты всех коробок превосходит заданное значение: " << maxSum << endl;
+    }
+    //4
+    int maxV = 300;
+    double Weight = maxWeight(boxes, size, maxV);
+    cout << "Максимальная масса для коробок с объёмом <= " << maxV << ": " << Weight << " кг" << endl;
+    //5
+    if (boxInBox(boxes, size)) {
+        cout << "Можно поместить коробку в коробку" << endl;
+    }
+    else {
+        cout << "Не можно поместить коробку в коробку" << endl; 
+    }
+    //6
+    if (boxEqual(box1, box3)) {
+        cout << "Коробки одинаковые" << endl;
+    }
+    else {
+        cout << "Коробки отличаются" << endl;
+    }
+    //7
+}
